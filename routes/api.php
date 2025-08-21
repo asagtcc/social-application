@@ -23,7 +23,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
             Route::post('logout', [AuthController::class, 'logout']);
             Route::get('me', [UserController::class, 'profile']);
             Route::put('update', [UserController::class, 'update']);
-            Route::post('delete', [UserController::class, 'delete']);
+            Route::delete('delete', [UserController::class, 'delete']);
         });
 
     Route::prefix('social-auth')->group(function () {
