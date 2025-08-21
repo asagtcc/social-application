@@ -17,6 +17,10 @@ Route::prefix('auth')->group(function () {
     Route::post('verifyOtp', [AuthController::class, 'verifyOtp']);
 });
 
+    Route::prefix('client')->group(function () {
+        Route::get('{network}/redirect', [SocialAuthController::class, 'redirect']);
+        Route::get('callback/{network}', [SocialAuthController::class, 'callback']);
+    });
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::prefix('profile')->group(function () {
@@ -26,10 +30,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
             Route::delete('delete', [UserController::class, 'delete']);
         });
 
-    Route::prefix('social-auth')->group(function () {
-        Route::get('{network}/redirect', [SocialAuthController::class, 'redirect']);
-        Route::get('{network}/callback', [SocialAuthController::class, 'callback']);
-    });
+
     Route::resource('social-networks', SocialNetworkController::class);
     Route::resource('social-accounts', SocialAccountController::class);
 });

@@ -19,7 +19,7 @@ class FacebookService implements SocialNetworkInterface
 
     public function getAuthUrl(): string
     {
-        $scopes = "pages_manage_posts,pages_show_list,pages_read_engagement,public_profile";
+        $scopes = "public_profile";
 
         return "https://www.facebook.com/v17.0/dialog/oauth?"
             . http_build_query([
