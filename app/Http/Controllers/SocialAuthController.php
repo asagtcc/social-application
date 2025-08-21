@@ -44,7 +44,6 @@ class SocialAuthController extends Controller
 
 //     $data = $response->json();
 
-//     // ده الـ Access Token
 //     $accessToken = $data['access_token'];
 
 //     return response()->json([
