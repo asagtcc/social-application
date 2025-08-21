@@ -31,7 +31,7 @@ class SocialAuthController extends Controller
         ]);
     }
 
-//     public function callback(Request $request, string $provider)
+//  public function callback(Request $request, string $provider)
 // {
 //     $code = $request->get('code');
 
