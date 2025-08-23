@@ -70,7 +70,9 @@
                 يمكنك الآن تسجيل الدخول والبدء في استكشاف المميزات الرائعة التي نوفرها لك.
             </p>
             <p style="text-align: center;">
-                <a href="{{ url('/') }}" class="btn">ابدأ الآن</a>
+                <a href="{{ url('/set-password/' . $user->verification_token) }}" class="btn">
+                    إنشاء كلمة المرور وتفعيل الحساب
+                </a>
             </p>
         </div>
         <div class="footer">

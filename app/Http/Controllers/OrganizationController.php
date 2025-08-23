@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\WelcomeMail;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Mail;
@@ -78,8 +79,8 @@ class OrganizationController extends Controller
             $user = $this->UserRepository->create([
                 'name'     => $data['name'],
                 'email'    => $data['email'],
-                'password' => bcrypt($data['password']),
-                'status'    => 1,
+                'verification_token' => Str::random(60),
+                'status'    => 0,
                 'is_active'    => 1,
             ]);
             if(!$user){

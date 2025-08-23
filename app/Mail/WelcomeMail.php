@@ -36,10 +36,12 @@ class WelcomeMail extends Mailable
 
     public function content(): Content
     {
+         $link = url("/set-password/{$this->user->verification_token}");
         return new Content(
             view: 'emails.welcome',
             with: [
                 'user' => $this->user,
+                'link' => $link
             ]
         );
     }
