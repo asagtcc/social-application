@@ -54,11 +54,12 @@ class AuthController extends Controller
          $newPassword = Str::random(10);
         $user->update( [
         'otp' => null,
+        'otp_expires_at' => null,
         'password' => bcrypt($newPassword),
         ]);
          Mail::to($user->email)->send(new NewPasswordMail($user, $newPassword));
 
-        return response()->json(['message' => 'OTP verified successfully'], 200);
+        return response()->json(['message' => 'the new password sent to your email'], 200);
     }
 
     public function logout()

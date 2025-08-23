@@ -36,6 +36,7 @@ class User extends Authenticatable  implements HasMedia
     protected function casts(): array
     {
         return [
+            'otp_expires_at' => 'datetime',
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
