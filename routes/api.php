@@ -13,15 +13,19 @@ use App\Http\Controllers\SocialNetworkController;
 
 Route::prefix('auth')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
-    Route::post('register', [AuthController::class, 'register']);
+    // Route::post('register', [AuthController::class, 'register']);
     Route::post('sendOpt', [AuthController::class, 'sendOpt']);
     Route::post('verifyOtp', [AuthController::class, 'verifyOtp']);
 });
 
-    Route::prefix('client')->group(function () {
-        Route::get('{network}/redirect', [SocialAuthController::class, 'redirect']);
-        Route::get('callback/{network}', [SocialAuthController::class, 'callback']);
-    });
+
+Route::group(['middleware' => ['auth:sanctum','IsAdmin']], function () {
+    Route::post('organisations/{organisation}/add-user', [OrganisationController::class, 'addUser']);
+    Route::delete('organisations/{organisation}/remove-user/{user}', [OrganisationController::class, 'removeUser']);
+    Route::apiResource('organisations', OrganisationController::class);
+    Route::apiResource('social-networks', SocialNetworkController::class);
+
+  });  
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::prefix('profile')->group(function () {
@@ -31,14 +35,15 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::delete('delete', [UserController::class, 'delete']);
     });
 
-    Route::post('organisations/{organisation}/add-user', [OrganisationController::class, 'addUser']);
-    Route::delete('organisations/{organisation}/remove-user/{user}', [OrganisationController::class, 'removeUser']);
+
+    Route::prefix('client')->group(function () {
+        Route::get('{network}/redirect', [SocialAuthController::class, 'redirect']);
+        Route::get('callback/{network}', [SocialAuthController::class, 'callback']);
+    });
 
 
-
-    Route::apiResource('social-networks', SocialNetworkController::class);
     Route::apiResource('social-accounts', SocialAccountController::class);
-    Route::apiResource('organisations', OrganisationController::class);
+
 });
 
 
