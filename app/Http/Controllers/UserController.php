@@ -25,14 +25,23 @@ private UserRepositoryInterface $UserRepository;
 
     public function update(UserRequest $request)
     {
-    $data = $request->validated();
-    if ($request->hasFile('photo')) {
-        $userPath = $request->file('photo')->store('user', 'public');
-        $data['photo'] = $userPath;
-    }
+        $data = $request->validated();
+        if ($request->hasFile('photo')) {
+            $userPath = $request->file('photo')->store('user', 'public');
+            $data['photo'] = $userPath;
+        }
+        $data = array_filter($data, fn($value) => !empty($value));
 
-    $user = $this->UserRepository->update($request->user()->id, $data);
-    return UserResource::make($user);
+        if (isset($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        }
+
+        $user = $this->UserRepository->update($request->user()->id, $data);
+        return response()->json([
+            'message' => 'تم تحديث الحساب بنجاح',
+            'data'    => UserResource::make($user)
+        ]);
+     
     }
 
     public function delete(Request $request)

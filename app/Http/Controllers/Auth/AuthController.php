@@ -21,16 +21,27 @@ class AuthController extends Controller
     public function sendOpt(Request $request): JsonResponse
     {
           $otp = rand(100000, 999999);
-           $user = User::where('email', $request->email)->first();
-            $user->update([
-            'otp' => $otp,
-            'otp_expires_at' => now()->addMinutes(3),
-        ]);
-        Mail::to($user->email)->send(new OtpMail($user, $otp));
+          try {
+            $user = User::where('email', $request->email)->first();
+            if (!$user) {
+                return response()->json(['message' => 'Invalid email'], 422);
+            }
+                $user->update([
+                'otp' => $otp,
+                'otp_expires_at' => now()->addMinutes(3),
+            ]);
+            Mail::to($user->email)->send(new OtpMail($user, $otp));
 
+            return response()->json([
+                'message' => 'OTP has been sent to your email',
+            ], 200);
+        } catch (\Exception $e) {
+       
         return response()->json([
-            'message' => 'OTP has been sent to your email',
-        ], 200);
+            'message' => 'Failed to send OTP',
+            'error' => $e->getMessage()
+        ], 500);
+    }
     }
 
     public function verifyOtp(Request $request): JsonResponse
