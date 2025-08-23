@@ -18,7 +18,7 @@ class SocialAuthController extends Controller
      protected function resolveService(string $provider)
     {
         if (!isset($this->services[$provider])) {
-            abort(404, "Provider not supported");
+            abort(409, "Provider not supported");
         }
         return $this->services[$provider];
     }
