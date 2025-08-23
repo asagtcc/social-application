@@ -22,9 +22,9 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'sometimes|string|max:255',
-            'email' => 'sometimes|string|email|max:255|unique:users,email,' . $this->user()->id,
-            'password' => 'sometimes|string|max:255',
+            'name' => 'sometimes|nullable|string|max:255',
+            'email' => 'sometimes|nullable|string|email|max:255|unique:users,email,' . $this->user()->id,
+            'password' => 'sometimes|nullable|string|max:255',
             'photo' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
