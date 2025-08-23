@@ -11,4 +11,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 
-Schedule::job(new ClearExpiredOtpsJob)->everyMinute();
+Schedule::job(new ClearExpiredOtpsJob)->hourly();

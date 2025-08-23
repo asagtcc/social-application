@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -13,17 +14,14 @@ class ClearExpiredOtpsJob implements ShouldQueue
 {
  use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
+
         User::whereNotNull('otp')
-            ->where('otp_expires_at', '<=', now()->subMinutes(1))
+            ->where('otp_expires_at', '<', now())
             ->update([
                 'otp' => null,
                 'otp_expires_at' => null,
             ]);
-    
     }
 }
