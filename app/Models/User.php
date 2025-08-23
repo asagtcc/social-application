@@ -25,6 +25,7 @@ class User extends Authenticatable  implements HasMedia
         'status',
         'otp',
         'otp_expires_at',
+        'verification_token',
         
     ];
  

@@ -93,7 +93,26 @@ class AuthController extends Controller
             ], 200);
 
     }
+  public function setPassword(Request $request, $token): JsonResponse
+    {
+        $request->validate([
+            'password' => 'required|string|min:6|confirmed',
+        ]);
 
+        $user = User::where('verification_token', $token)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'Invalid token'], 422);
+        }
+
+        $user->update([
+            'password' => Hash::make($request->password),
+            'verification_token' => null,
+            'status' => 1,
+        ]);
+
+        return response()->json(['message' => 'Password has been set successfully'], 200);
+    }
     public function login(Request $request)
     {
         $request->validate([
@@ -118,4 +137,6 @@ class AuthController extends Controller
             'token' => $token
         ]);
     }
+    
+  
 }

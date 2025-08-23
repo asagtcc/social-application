@@ -25,7 +25,6 @@ class AddUserRequest extends FormRequest
             'user_id'   => 'nullable|exists:users,id',
             'name'      => 'nullable|required_without:user_id|string|max:255',
             'email'     => 'nullable|required_without:user_id|email|unique:users,email',
-            'password'  => 'nullable|required_without:user_id|string|min:6',
         ];
     }
 
@@ -39,9 +38,6 @@ class AddUserRequest extends FormRequest
             'email.required_without'    => 'البريد الإلكتروني مطلوب عند عدم اختيار مستخدم.',
             'email.email'               => 'يجب إدخال بريد إلكتروني صالح.',
             'email.unique'              => 'هذا البريد الإلكتروني مستخدم بالفعل.',
-            'password.required_without' => 'كلمة المرور مطلوبة عند عدم اختيار مستخدم.',
-            'password.string'           => 'كلمة المرور يجب أن تكون نصًا.',
-            'password.min'              => 'كلمة المرور يجب أن تكون على الأقل 6 أحرف.',
         ];
     }
     

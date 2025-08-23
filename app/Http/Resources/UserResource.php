@@ -20,7 +20,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'status' => $this->status,
             'is_active' => $this->is_active,
-            'type' => $this->type,
+            'type'     => $this->type,
             'organizations' => OrganizationResource::collection($this->whenLoaded('organizations')),
         ];
     }

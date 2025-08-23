@@ -16,6 +16,7 @@ Route::prefix('auth')->group(function () {
     // Route::post('register', [AuthController::class, 'register']);
     Route::post('sendOpt', [AuthController::class, 'sendOpt']);
     Route::post('verifyOtp', [AuthController::class, 'verifyOtp']);
+    Route::post('set-password/{token}', [AuthController::class, 'setPassword']);
 });
 
 
