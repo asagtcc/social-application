@@ -102,7 +102,7 @@ class AuthController extends Controller
         ]);
 
         $user = User::where('email', $request->email)
-        ->with('organisations')
+        ->with('organizations')
         ->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {

@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Interfaces;
 
-interface OrganisationRepositoryInterface
+interface OrganizationRepositoryInterface
 {
     public function getAll();
     public function getBySlug($slug);

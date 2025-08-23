@@ -12,7 +12,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Organisation extends Model  implements HasMedia
+class organization extends Model  implements HasMedia
 {
     use HasApiTokens, HasFactory, Notifiable, HasSlug, SoftDeletes, InteractsWithMedia;
      protected $fillable = [
