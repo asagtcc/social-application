@@ -50,8 +50,8 @@ class OrganizationController extends Controller
             return response()->json([
                 'message' => 'Failed to create organization',
                 'error' => $e->getMessage()
-            ], 500);
-    }
+            ], 409);
+        }
     }
     public function show($slug)
     {
