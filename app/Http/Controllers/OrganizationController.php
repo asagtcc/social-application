@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Resources\OrganizationResource;
+use App\Http\Requests\Organization\StoreRequest;
 use App\Http\Requests\Organization\AddUserRequest;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\Interfaces\OrganizationRepositoryInterface;
@@ -32,21 +33,25 @@ class OrganizationController extends Controller
         $Organization = $this->OrganizationRepository->getAll();
         return OrganizationResource::collection($Organization);
     }
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        $attributes = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'is_active' => 'boolean',
-        ]);
+        try {
+            $data = $request->validated();
 
-    if ($request->hasFile('logo')) {
-        $userPath = $request->file('logo')->store('Organization', 'public');
-        $data['logo'] = $userPath;
+            if ($request->hasFile('logo')) {
+                $userPath = $request->file('logo')->store('Organization', 'public');
+                $data['logo'] = $userPath;
+            }
+
+            $organization = $this->OrganizationRepository->create($data);
+            return new OrganizationResource($organization);
+
+         } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to create organization',
+                'error' => $e->getMessage()
+            ], 500);
     }
-
-        $Organization = $this->OrganizationRepository->create($attributes);
-        return new OrganizationResource($Organization);
     }
     public function show($slug)
     {
