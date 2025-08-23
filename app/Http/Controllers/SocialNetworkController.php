@@ -34,7 +34,7 @@ class SocialNetworkController extends Controller
     {
         $socialNetwork = $this->SocialNetworkRepository->getBySlug($slug);
         if (!$socialNetwork) {
-            return response()->json(['message' => 'Social Network not found'], 404);
+            return response()->json(['message' => 'Social Network not found'], 409);
         }
         return new SocialNetworkResource($socialNetwork);
     }
@@ -49,7 +49,7 @@ class SocialNetworkController extends Controller
         }
         $socialNetwork = $this->SocialNetworkRepository->update($slug, $data);
         if (!$socialNetwork) {
-            return response()->json(['message' => 'Social Network not found'], 404);
+            return response()->json(['message' => 'Social Network not found'], 409);
         }
         return new SocialNetworkResource($socialNetwork);
     }
@@ -58,7 +58,7 @@ class SocialNetworkController extends Controller
     {
         $deleted = $this->SocialNetworkRepository->delete($slug);
         if (!$deleted) {
-            return response()->json(['message' => 'Social Network not found'], 404);
+            return response()->json(['message' => 'Social Network not found'], 409);
         }
         return response()->json(['message' => 'Social Network deleted successfully'], 200);
     }

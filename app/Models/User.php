@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Organisation;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Notifications\Notifiable;
@@ -19,8 +20,12 @@ class User extends Authenticatable  implements HasMedia
         'name',
         'email',
         'password',
+        'type',
+        'is_active',
         'status',
         'otp',
+        'otp_expires_at',
+        
     ];
  
     protected $hidden = [
@@ -43,5 +48,10 @@ class User extends Authenticatable  implements HasMedia
     public function getPhotoUrlAttribute()
     {
         return $this->getFirstMediaUrl('photo') ?: asset('images/default-avatar.png');
+    }
+
+    public function organisations()
+    {
+        return $this->belongsToMany(Organisation::class);
     }
 }

@@ -24,6 +24,7 @@ class AuthController extends Controller
            $user = User::where('email', $request->email)->first();
             $user->update([
             'otp' => $otp,
+            'otp_expires_at' => now()->addMinutes(3),
         ]);
         Mail::to($user->email)->send(new OtpMail($user, $otp));
 
@@ -35,13 +36,20 @@ class AuthController extends Controller
     public function verifyOtp(Request $request): JsonResponse
     {
         $request->validate([
+            'email' => 'required|email|exists:users,email',
             'otp' => 'required|string',
         ]);
 
-        $user = User::where('otp', $request->otp)->first();
+        $user = User:: where('email', $request->email)
+            ->where('otp', $request->otp)
+            ->first();
 
         if (!$user) {
             return response()->json(['message' => 'Invalid OTP'], 422);
+        }
+
+        if ($user->otp_expires_at->isPast()) {
+            return response()->json(['message' => 'OTP has expired'], 422);
         }
          $newPassword = Str::random(10);
         $user->update( [
@@ -92,7 +100,9 @@ class AuthController extends Controller
             'password' => 'required|string'
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)
+        ->with('organisations')
+        ->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
