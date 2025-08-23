@@ -14,7 +14,7 @@ class UserRepository implements UserRepositoryInterface
 
     public function getById($id)
     {
-        return User::find($id);
+     return User::with('organizations')->find($id);
     }
 
     public function create(array $attributes)

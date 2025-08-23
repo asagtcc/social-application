@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\OrganisationController;
+use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\SocialAccountController;
 use App\Http\Controllers\SocialNetworkController;
@@ -20,9 +20,9 @@ Route::prefix('auth')->group(function () {
 
 
 Route::group(['middleware' => ['auth:sanctum','IsAdmin']], function () {
-    Route::post('organisations/{organisation}/add-user', [OrganisationController::class, 'addUser']);
-    Route::delete('organisations/{organisation}/remove-user/{user}', [OrganisationController::class, 'removeUser']);
-    Route::apiResource('organisations', OrganisationController::class);
+    Route::post('organizations/{organizations}/add-user', [OrganizationController::class, 'addUser']);
+    Route::delete('organizations/{organizations}/remove-user/{user}', [OrganizationController::class, 'removeUser']);
+    Route::apiResource('organizations', OrganizationController::class);
     Route::apiResource('social-networks', SocialNetworkController::class);
 
   });  

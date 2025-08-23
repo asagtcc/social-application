@@ -2,32 +2,32 @@
 
 namespace App\Repositories;
 
-use App\Repositories\Interfaces\OrganisationRepositoryInterface;
-use App\Models\Organisation; // Assumption: You have a Model with the same name
+use App\Repositories\Interfaces\OrganizationRepositoryInterface;
+use App\Models\organization; // Assumption: You have a Model with the same name
 
-class OrganisationRepository implements OrganisationRepositoryInterface
+class OrganizationRepository implements OrganizationRepositoryInterface
 {
     public function getAll()
     {
-         return Organisation::query()
+         return organization::query()
          ->with('users')->paginate(10);
     }
 
     public function getBySlug($slug)
     {
-        return Organisation::where('slug', $slug)
+        return organization::where('slug', $slug)
             ->with('users') 
             ->first();
     }
 
     public function create(array $attributes)
     {
-        return Organisation::create($attributes);
+        return organization::create($attributes);
     }
 
     public function update($id, array $attributes)
     {
-        $record = Organisation::find($id);
+        $record = organization::find($id);
         if ($record) {
             $record->update($attributes);
             return $record;
@@ -37,7 +37,7 @@ class OrganisationRepository implements OrganisationRepositoryInterface
 
     public function delete($id)
     {
-        $record = Organisation::find($id);
+        $record = organization::find($id);
         if ($record) {
             return $record->delete();
         }

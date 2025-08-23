@@ -3,7 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Models\Organisation;
+use App\Models\organization;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Notifications\Notifiable;
@@ -51,8 +51,8 @@ class User extends Authenticatable  implements HasMedia
         return $this->getFirstMediaUrl('photo') ?: asset('images/default-avatar.png');
     }
 
-    public function organisations()
+    public function organizations()
     {
-        return $this->belongsToMany(Organisation::class);
+        return $this->belongsToMany(organization::class);
     }
 }
