@@ -22,8 +22,8 @@ class SocialNetworkRequest extends FormRequest
     public function rules(): array
     {
             return [
-            'name'      => 'sometimes|string|max:255',
-            'url'       => 'sometimes|url|max:255',
+            'name'      => 'sometimes|nullable|string|max:255',
+            'url'       => 'sometimes|nullable|url|max:255',
             'is_active' => 'sometimes|in:0,1',
             'icon'      => 'sometimes|nullable|string|max:255',
         ];

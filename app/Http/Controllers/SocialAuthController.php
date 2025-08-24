@@ -17,15 +17,19 @@ class SocialAuthController extends Controller
 
      protected function resolveService(string $provider)
     {
-        if (!isset($this->services[$provider])) {
-            abort(409, "Provider not supported");
-        }
-        return $this->services[$provider];
+        return $this->services[$provider] ?? null;
     }
 
     public function redirect(string $provider)
     {
         $service = $this->resolveService($provider);
+        if (!$service) {
+            return response()->json([
+                'message' => 'Provider not supported'
+            ], 400);
+        }
+
+
         return response()->json([
             'url' => $service->getAuthUrl()
         ]);
