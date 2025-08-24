@@ -40,5 +40,11 @@ return [
         'client_secret' => env('FB_APP_SECRET'),
         'redirect'      => env('FB_REDIRECT_URI'),
     ],
+    'instagram' => [
+            'client_id'     => env('instagram_APP_ID'),
+            'client_secret' => env('instagram_APP_SECRET'),
+            'redirect'      => env('instagram_REDIRECT_URI'),
+
+    ],
 
 ];

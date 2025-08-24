@@ -1,17 +1,22 @@
 <?php
 namespace App\Http\Controllers;
-use App\Services\SocialNetworks\FacebookService;
 use Illuminate\Http\Request;
+use App\Services\SocialNetworks\FacebookService;
+use App\Services\SocialNetworks\InstagramService;
 
 
 class SocialAuthController extends Controller
 {
    protected $services;
 
-    public function __construct(FacebookService $facebook)
+    public function __construct(
+        FacebookService $facebook,
+        InstagramService $instagram
+        )
     {
         $this->services = [
             'facebook' => $facebook,
+             'instagram' => $instagram,
         ];
     }
 
