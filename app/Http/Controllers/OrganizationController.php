@@ -122,4 +122,40 @@ class OrganizationController extends Controller
 
         return response()->json(['message' => 'User removed from Organization successfully'], 200);
     }
+    public function destroy($slug)
+    {
+        $Organization = $this->OrganizationRepository->getBySlug($slug);
+        if (!$Organization) {
+            return response()->json(['message' => 'Organization not found'], 409);
+        }
+        $this->OrganizationRepository->delete($Organization->id);
+        return response()->json(['message' => 'Organization deleted successfully'], 200);
+    }
+    public function update(StoreRequest $request, $slug)
+    {
+        try {
+            $Organization = $this->OrganizationRepository->getBySlug($slug);
+            if (!$Organization) {
+                return response()->json(['message' => 'Organization not found'], 409);
+            }
+
+            $data = $request->validated();
+
+            if ($request->hasFile('logo')) {
+                $userPath = $request->file('logo')->store('Organization', 'public');
+                $data['logo'] = $userPath;
+            }
+            $data = array_filter($data, fn($value) => !empty($value));
+            $this->OrganizationRepository->update($Organization->id, $data);
+
+            $updatedOrganization = $this->OrganizationRepository->getBySlug($slug);
+            return new OrganizationResource($updatedOrganization);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to update organization',
+                'error' => $e->getMessage()
+            ], 409);
+        }
+    }
 }
