@@ -47,6 +47,7 @@ class SocialNetworkController extends Controller
             $iconPath  = $request->file('icon')->store('social', 'public');
             $data['icon'] = $iconPath ;
         }
+        $data = array_filter($data, fn($value) => $value !== null);
         $socialNetwork = $this->SocialNetworkRepository->update($slug, $data);
         if (!$socialNetwork) {
             return response()->json(['message' => 'Social Network not found'], 409);

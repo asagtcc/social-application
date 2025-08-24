@@ -37,7 +37,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     });
 
 
-    Route::prefix('client')->group(function () {
+    Route::prefix('social-auth')->group(function () {
         Route::get('{network}/redirect', [SocialAuthController::class, 'redirect']);
         Route::get('callback/{network}', [SocialAuthController::class, 'callback']);
     });
