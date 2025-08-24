@@ -2,11 +2,11 @@
 
 namespace App\Repositories\Interfaces;
 
-interface SocialAccountRepositoryInterface
+interface PostRepositoryInterface
 {
     public function getAll();
-    public function getBySlug($slug);
-    public function getByAccountId($id);
+    public function getById($id);
+    public function getAllByAccount($account,$status,$UserId);
     public function create(array $attributes);
     public function update($id, array $attributes);
     public function delete($id);

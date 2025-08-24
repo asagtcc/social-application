@@ -18,7 +18,7 @@ private UserRepositoryInterface $UserRepository;
 
     public function profile(Request $request)
     {
-        $user = $this->UserRepository->getById($request->user()->id);
+        $user = $this->UserRepository->getById(auth()->id());
         return UserResource::make($user);
 
     }
@@ -36,7 +36,7 @@ private UserRepositoryInterface $UserRepository;
             $data['password'] = bcrypt($data['password']);
         }
 
-        $user = $this->UserRepository->update($request->user()->id, $data);
+        $user = $this->UserRepository->update(auth()->id(), $data);
         return response()->json([
             'message' => 'تم تحديث الحساب بنجاح',
             'data'    => UserResource::make($user)
@@ -46,7 +46,7 @@ private UserRepositoryInterface $UserRepository;
 
     public function delete(Request $request)
     {
-        $this->UserRepository->delete($request->user()->id);
+        $this->UserRepository->delete(auth()->id());
         return response()->json(['message' => 'User deleted successfully'], 200);
     }
 

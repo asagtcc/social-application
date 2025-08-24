@@ -144,7 +144,7 @@ class OrganizationController extends Controller
             if ($request->hasFile('logo')) {
                 $userPath = $request->file('logo')->store('Organization', 'public');
                 $data['logo'] = $userPath;
-            }
+     }
             $data = array_filter($data, fn($value) => !empty($value));
             $this->OrganizationRepository->update($Organization->id, $data);
 
