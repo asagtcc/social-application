@@ -3,9 +3,11 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TimeSlotController;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\SocialAuthController;
+use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\SocialAccountController;
 use App\Http\Controllers\SocialNetworkController;
 
@@ -42,7 +44,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('callback/{network}', [SocialAuthController::class, 'callback']);
     });
 
-
+    Route::get('time-slots', [TimeSlotController::class, 'index']);
+    Route::prefix('posts')->group(function () {
+        Route::post('channels/{account}/store', [PostController::class, 'store']);
+        Route::get('channels/{account}/{type}', [PostController::class, 'index']);
+    });
     Route::apiResource('social-accounts', SocialAccountController::class);
 
 });

@@ -12,6 +12,14 @@ class SocialAccountRepository implements SocialAccountRepositoryInterface
         return SocialAccount::all();
     }
 
+    public function getByAccountId($id)
+    {
+        return SocialAccount::query()
+            ->whereHas('socialNetwork', function ($query) use ($id) {
+                $query->where('account_id', $id);
+            })
+            ->first();
+    }
     public function getBySlug($slug)
     {
         return SocialAccount::query()
