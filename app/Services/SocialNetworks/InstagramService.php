@@ -4,7 +4,7 @@ namespace App\Services\SocialNetworks;
 
 use Illuminate\Support\Facades\Http;
 
-class FacebookService implements SocialNetworkInterface
+class InstagramService implements SocialNetworkInterface
 {
     protected $clientId;
     protected $clientSecret;
@@ -12,15 +12,14 @@ class FacebookService implements SocialNetworkInterface
 
     public function __construct()
     {
-        $this->clientId     = config('services.facebook.client_id');
-        $this->clientSecret = config('services.facebook.client_secret');
-        $this->redirectUri  = config('services.facebook.redirect');
+        $this->clientId     = config('services.instagram.client_id');
+        $this->clientSecret = config('services.instagram.client_secret');
+        $this->redirectUri  = config('services.instagram.redirect');
     }
 
     public function getAuthUrl(): string
     {
-        $scopes = "public_profile,email,pages_show_list,pages_manage_posts,pages_read_engagement";
-
+    $scopes = "instagram_basic,pages_show_list,instagram_content_publish";
         return "https://www.facebook.com/v17.0/dialog/oauth?"
             . http_build_query([
                 'client_id'     => $this->clientId,
@@ -39,28 +38,27 @@ class FacebookService implements SocialNetworkInterface
             'code'          => $code,
         ]);
 
-        $shortToken = $shortResponse->json()['access_token'] ?? null;
+        $shortLivedToken = $shortResponse->json()['access_token'] ?? null;
 
-        if (!$shortToken) {
-            throw new \Exception('Failed to get short-lived token: ' . json_encode($shortResponse->json()));
+        if (!$shortLivedToken) {
+            throw new \Exception('Failed to get short-lived access token: ' . json_encode($shortResponse->json()));
         }
 
         $longResponse = Http::get('https://graph.facebook.com/v17.0/oauth/access_token', [
             'grant_type'        => 'fb_exchange_token',
             'client_id'         => $this->clientId,
             'client_secret'     => $this->clientSecret,
-            'fb_exchange_token' => $shortToken,
+            'fb_exchange_token' => $shortLivedToken,
         ]);
 
-        $longToken = $longResponse->json()['access_token'] ?? null;
+        $longLivedToken = $longResponse->json()['access_token'] ?? null;
 
-        if (!$longToken) {
-            throw new \Exception('Failed to get long-lived token: ' . json_encode($longResponse->json()));
+        if (!$longLivedToken) {
+            throw new \Exception('Failed to get long-lived access token: ' . json_encode($longResponse->json()));
         }
 
-        return $longToken;
+        return $longLivedToken;
     }
-
 
     // public function getAccessToken(string $code): string
     // {
