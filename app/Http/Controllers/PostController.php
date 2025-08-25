@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Resources\PostResource;
 use App\Repositories\Interfaces\PostRepositoryInterface;
@@ -31,7 +32,6 @@ private SocialAccountRepositoryInterface $SocialAccountRepository;
         }
         $posts = $this->PostRepository->getAllByAccount($SocialAccount->id, $status, auth()->id());
         return PostResource::collection($posts);
-        //return response()->json($posts);
     }
 
     public function store(Request $request, $account)

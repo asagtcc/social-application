@@ -16,9 +16,9 @@ class ClearExpiredOtpsJob implements ShouldQueue
 
     public function handle(): void
     {
-
+        $now = Carbon::now()->format('Y-m-d H:i:s');
         User::whereNotNull('otp')
-            ->where('otp_expires_at', '<', now())
+            ->where('otp_expires_at', '<', $now)
             ->update([
                 'otp' => null,
                 'otp_expires_at' => null,

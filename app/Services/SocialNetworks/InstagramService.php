@@ -31,7 +31,7 @@ class InstagramService implements SocialNetworkInterface
 
     public function getAccessToken(string $code): string
     {
-        $shortResponse = Http::get('https://graph.facebook.com/v17.0/oauth/access_token', [
+        $shortResponse = Http::asForm()->post('https://graph.facebook.com/v17.0/oauth/access_token', [
             'client_id'     => $this->clientId,
             'client_secret' => $this->clientSecret,
             'redirect_uri'  => $this->redirectUri,
@@ -44,7 +44,7 @@ class InstagramService implements SocialNetworkInterface
             throw new \Exception('Failed to get short-lived access token: ' . json_encode($shortResponse->json()));
         }
 
-        $longResponse = Http::get('https://graph.facebook.com/v17.0/oauth/access_token', [
+        $longResponse = Http::asForm()->post('https://graph.facebook.com/v17.0/oauth/access_token', [
             'grant_type'        => 'fb_exchange_token',
             'client_id'         => $this->clientId,
             'client_secret'     => $this->clientSecret,
@@ -60,21 +60,9 @@ class InstagramService implements SocialNetworkInterface
         return $longLivedToken;
     }
 
-    // public function getAccessToken(string $code): string
-    // {
-    //     $response = Http::get('https://graph.facebook.com/v17.0/oauth/access_token', [
-    //         'client_id'     => $this->clientId,
-    //         'client_secret' => $this->clientSecret,
-    //         'redirect_uri'  => $this->redirectUri,
-    //         'code'          => $code,
-    //     ]);
-
-    //     return $response->json()['access_token'] ?? '';
-    // }
-
     public function getUserProfile(string $accessToken): array
     {
-        $response = Http::get("https://graph.facebook.com/me", [
+        $response = Http::asForm()->post("https://graph.facebook.com/me", [
             'fields'        => 'id,name,picture',
             'access_token'  => $accessToken,
         ]);
