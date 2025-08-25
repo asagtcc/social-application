@@ -14,10 +14,12 @@ class PublishScheduledPostsJob implements ShouldQueue
 
     public function handle(): void
     {
-       $now = Carbon::now()->format('Y-m-d H:i:s');
+       $now = Carbon::now();
+
         $posts = Post::where('status', 'queue')
             ->where('published_at', '<=', $now)
             ->get();
+
 
         foreach ($posts as $post) {
             try {
