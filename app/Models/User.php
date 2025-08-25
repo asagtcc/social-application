@@ -47,10 +47,6 @@ class User extends Authenticatable  implements HasMedia
     {
         return $this->hasMany(SocialAccount::class);
     }
-    public function getPhotoUrlAttribute()
-    {
-        return $this->getFirstMediaUrl('photo') ?: asset('images/default-avatar.png');
-    }
 
     public function organizations()
     {

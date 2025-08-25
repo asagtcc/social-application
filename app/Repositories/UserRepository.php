@@ -7,9 +7,12 @@ use App\Models\User; // Assumption: You have a Model with the same name
 
 class UserRepository implements UserRepositoryInterface
 {
-    public function getAll()
+    public function getAllByType($type)
     {
-        return User::all();
+        return User::query()
+         ->where('type',$type)->paginate(10);
+
+        return User::getAllByType($type);
     }
 
     public function getById($id)
