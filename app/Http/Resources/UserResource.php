@@ -21,6 +21,7 @@ class UserResource extends JsonResource
             'status' => $this->status,
             'is_active' => $this->is_active,
             'type'     => $this->type,
+            'photo' => $this->getFirstMediaUrl('user') ?: asset('default/default-user.png'),
             'organizations' => OrganizationResource::collection($this->whenLoaded('organizations')),
         ];
     }
