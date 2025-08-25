@@ -53,26 +53,33 @@ private UserRepositoryInterface $UserRepository;
     public function show($id)
     {
         $user = $this->UserRepository->getById($id);
-        return response()->json(['data' => $user]);
-    }
-    public function update(Request $request, $id)
-    {
-        $data = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|string|email|max:255|unique:users,email,' . $id,
-            'password' => 'sometimes|required|string|min:8',
-            'type' => 'sometimes|required|string|in:admin,user',
-        ]);
+        
+        return response()->json(
+            [
+                'message' => 'Admin information', 
+                'data' => AdminResource::make($user)
+            ], 201);
 
+    }
+    public function update(AdminRequest $request, $id)
+    {
+        $data = $request->validated();
+        
         if (isset($data['password'])) {
             $data['password'] = bcrypt($data['password']);
         }
 
+        $photo = Arr::pull($data, 'photo');
         $user = $this->UserRepository->update($id, $data);
+        if ($photo) {
+            $user->clearMediaCollection('user');
+            $user->addMedia($photo)
+                ->toMediaCollection('user'); 
+        }
         return response()->json(['message' => 'Admin updated successfully', 'data' => $user]);
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $this->UserRepository->delete($id);
         return response()->json(['message' => 'Admin deleted successfully'], 200);
