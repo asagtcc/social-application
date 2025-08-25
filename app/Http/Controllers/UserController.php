@@ -32,12 +32,13 @@ private UserRepositoryInterface $UserRepository;
      
         $data = array_filter($data, fn($value) => !empty($value));
 
-        if (isset($data['password'])) {
+        if (!empty($data['password'])) {
             $data['password'] = bcrypt($data['password']);
         }
 
         $user = $this->UserRepository->update(auth()->id(), $data);
         if ($photo) {
+            $user->clearMediaCollection('user');
             $user->addMedia($photo)
                 ->toMediaCollection('user'); 
         }
