@@ -4,13 +4,15 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Post extends Model
+class Post extends Model  implements HasMedia
 {
-   use HasApiTokens, HasFactory, SoftDeletes;
+   use HasApiTokens, HasFactory, SoftDeletes, InteractsWithMedia;
 
     protected $fillable = [
         'user_id',

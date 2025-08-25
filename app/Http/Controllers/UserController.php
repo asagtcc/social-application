@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use App\Http\Requests\User\UserRequest;
@@ -26,10 +27,9 @@ private UserRepositoryInterface $UserRepository;
     public function update(UserRequest $request)
     {
         $data = $request->validated();
-        if ($request->hasFile('photo')) {
-            $userPath = $request->file('photo')->store('user', 'public');
-            $data['photo'] = $userPath;
-        }
+
+        $photo = Arr::pull($data, 'photo');
+     
         $data = array_filter($data, fn($value) => !empty($value));
 
         if (isset($data['password'])) {
@@ -37,6 +37,10 @@ private UserRepositoryInterface $UserRepository;
         }
 
         $user = $this->UserRepository->update(auth()->id(), $data);
+        if ($photo) {
+            $user->addMedia($photo)
+                ->toMediaCollection('user'); 
+        }
         return response()->json([
             'message' => 'تم تحديث الحساب بنجاح',
             'data'    => UserResource::make($user)
