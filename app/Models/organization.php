@@ -36,5 +36,20 @@ class organization extends Model  implements HasMedia
         return $this->belongsToMany(User::class);
     }
 
-  
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function currentPlan()
+    {
+        return $this->hasOne(Subscription::class)->where('is_active', true);
+    }
+
+    public function plans()
+    {
+        return $this->belongsToMany(Plan::class, 'subscriptions')
+                    ->withPivot(['is_active', 'starts_at', 'ends_at'])
+                    ->withTimestamps();
+    }
 }

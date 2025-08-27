@@ -19,8 +19,8 @@ class FacebookService implements SocialNetworkInterface
 
     public function getAuthUrl(): string
     {
-        $scopes = "public_profile,email,pages_show_list,pages_manage_posts,pages_read_engagement";
-
+        //$scopes = "public_profile,email,pages_show_list,pages_manage_posts,pages_read_engagement";
+        $scopes = "public_profile,email";
         return "https://www.facebook.com/v17.0/dialog/oauth?"
             . http_build_query([
                 'client_id'     => $this->clientId,
@@ -96,13 +96,4 @@ class FacebookService implements SocialNetworkInterface
         return $response->json();
     }
 
-    // public function publishPost(string $accessToken, array $data): array
-    // {
-    //     $response = Http::post("https://graph.facebook.com/me/feed", [
-    //         'message'       => $data['message'] ?? '',
-    //         'access_token'  => $accessToken,
-    //     ]);
-
-    //     return $response->json();
-    // }
 }

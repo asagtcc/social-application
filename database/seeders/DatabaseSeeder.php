@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             SocialNetworkSeeder::class,
             TimeSlotSeeder::class,
+            PlanSeeder::class,
         ]);
     }
 }
