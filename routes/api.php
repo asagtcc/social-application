@@ -37,6 +37,7 @@ Route::group(['middleware' => ['auth:sanctum','IsAdmin']], function () {
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::prefix('profile')->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);
+        Route::get('organizations', [UserController::class, 'organizations']);
         Route::get('me', [UserController::class, 'profile']);
         Route::PATCH('update', [UserController::class, 'update']);
         Route::delete('delete', [UserController::class, 'delete']);
@@ -55,6 +56,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     });
     Route::apiResource('social-accounts', SocialAccountController::class);
     Route::get('plans', [PlanController::class, 'index']);
+    Route::get('plans/{slug}/subscribe', [PlanController::class, 'subscribe']);
 });
 
 
