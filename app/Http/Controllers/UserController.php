@@ -6,7 +6,9 @@ use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use App\Http\Requests\User\UserRequest;
+use App\Http\Resources\OrganizationResource;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\OrganizationRepository;
 
 class UserController extends Controller
 {
@@ -24,6 +26,16 @@ private UserRepositoryInterface $UserRepository;
 
     }
 
+    public function organizations(Request $request)
+    {
+        $user = $this->UserRepository->getById(auth()->id());
+        $organizations = $user->organizations;
+
+        return response()->json([
+            'message' => 'المنظمات التي ينتمي إليها المستخدم',
+            'data'    => OrganizationResource::collection($organizations)
+        ]);
+    }
     public function update(UserRequest $request)
     {
         $data = $request->validated();
